@@ -1,14 +1,14 @@
 <?php
-  include("session.php");
-  $one_month_ago = date("Y-m-d", strtotime("-1 month"));
-  $exp_category_dc = mysqli_query($con, "SELECT expensecategory FROM expenses WHERE user_id = '$userid' AND expensedate >= '$one_month_ago' GROUP BY expensecategory");
-  $exp_amt_dc = mysqli_query($con, "SELECT SUM(expense) FROM expenses WHERE user_id = '$userid' AND expensedate >= '$one_month_ago' GROUP BY expensecategory");
-  
-  $one_week_ago = date("Y-m-d", strtotime("-1 week"));
-  $exp_date_line = mysqli_query($con, "SELECT DATE_FORMAT(expensedate, '%b %d') AS day_month FROM expenses WHERE user_id = '$userid' AND expensedate >= '$one_week_ago' GROUP BY expensedate");
-  $exp_amt_line = mysqli_query($con, "SELECT SUM(expense) FROM expenses WHERE user_id = '$userid' AND expensedate >= '$one_week_ago' GROUP BY expensedate");
-  
-  $yearly_expenses_query = "SELECT YEAR(expensedate) AS year, SUM(expense) AS total_expense
+include("session.php");
+$one_month_ago = date("Y-m-d", strtotime("-1 month"));
+$exp_category_dc = mysqli_query($con, "SELECT expensecategory FROM expenses WHERE user_id = '$userid' AND expensedate >= '$one_month_ago' GROUP BY expensecategory");
+$exp_amt_dc = mysqli_query($con, "SELECT SUM(expense) FROM expenses WHERE user_id = '$userid' AND expensedate >= '$one_month_ago' GROUP BY expensecategory");
+
+$one_week_ago = date("Y-m-d", strtotime("-1 week"));
+$exp_date_line = mysqli_query($con, "SELECT DATE_FORMAT(expensedate, '%b %d') AS day_month FROM expenses WHERE user_id = '$userid' AND expensedate >= '$one_week_ago' GROUP BY expensedate");
+$exp_amt_line = mysqli_query($con, "SELECT SUM(expense) FROM expenses WHERE user_id = '$userid' AND expensedate >= '$one_week_ago' GROUP BY expensedate");
+
+$yearly_expenses_query = "SELECT YEAR(expensedate) AS year, SUM(expense) AS total_expense
                           FROM expenses
                           WHERE user_id = '$userid'
                           GROUP BY YEAR(expensedate)
@@ -17,8 +17,8 @@ $yearly_expenses_result = mysqli_query($con, $yearly_expenses_query);
 $year_labels = [];
 $yearly_expense_data = [];
 while ($row = mysqli_fetch_assoc($yearly_expenses_result)) {
-    $year_labels[] = $row['year'];
-    $yearly_expense_data[] = $row['total_expense'];
+  $year_labels[] = $row['year'];
+  $yearly_expense_data[] = $row['total_expense'];
 }
 
 $monthly_expenses_query = "SELECT DATE_FORMAT(expensedate, '%Y-%m') AS month_year, SUM(expense) AS total_expense
@@ -31,8 +31,8 @@ $monthly_expenses_result = mysqli_query($con, $monthly_expenses_query);
 $monthly_labels = [];
 $monthly_expense_data = [];
 while ($row = mysqli_fetch_assoc($monthly_expenses_result)) {
-    $monthly_labels[] = $row['month_year'];
-    $monthly_expense_data[] = $row['total_expense'];
+  $monthly_labels[] = $row['month_year'];
+  $monthly_expense_data[] = $row['total_expense'];
 }
 
 $today_expense = mysqli_query($con, "SELECT SUM(expense) FROM expenses WHERE user_id = '$userid' AND expensedate = CURDATE()");
@@ -43,7 +43,7 @@ $this_year_expense = mysqli_query($con, "SELECT SUM(expense) FROM expenses WHERE
 $total_expense = mysqli_query($con, "SELECT SUM(expense) FROM expenses WHERE user_id = '$userid'");
 
 $today_expense_amount = '0' + mysqli_fetch_assoc($today_expense)['SUM(expense)'];
-$yesterday_expense_amount ='0' + mysqli_fetch_assoc($yesterday_expense)['SUM(expense)'];
+$yesterday_expense_amount = '0' + mysqli_fetch_assoc($yesterday_expense)['SUM(expense)'];
 $this_week_expense_amount = '0' + mysqli_fetch_assoc($this_week_expense)['SUM(expense)'];
 $this_month_expense_amount = '0' + mysqli_fetch_assoc($this_month_expense)['SUM(expense)'];
 $this_year_expense_amount = '0' + mysqli_fetch_assoc($this_year_expense)['SUM(expense)'];
@@ -64,9 +64,9 @@ $total_expense_amount = '0' + mysqli_fetch_assoc($total_expense)['SUM(expense)']
 
   <!-- Bootstrap core CSS -->
   <link href="css/bootstrap.css" rel="stylesheet">
-  
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet">
 
   <!-- Feather JS for Icons -->
   <script src="js/feather.min.js"></script>
@@ -80,34 +80,40 @@ $total_expense_amount = '0' + mysqli_fetch_assoc($total_expense)['SUM(expense)']
       color: #28a745;
       text-decoration: dotted;
     }
+
     .try {
-  font-size: 28px; /* Adjust the font size as needed */
-  color: #333;    /* Adjust the color as needed */
-  padding: 5px 0px 0px 0px;   /* Adjust the padding as needed */
-}
-.container {
-    padding:0px 20px 20px 20px;/* Add padding to the container */
-  }
-.card.text-center {
-    border: 3px solid #ccc;
-    padding: 10px;
-    margin: 10px;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-  }
+      font-size: 28px;
+      /* Adjust the font size as needed */
+      color: #333;
+      /* Adjust the color as needed */
+      padding: 5px 0px 0px 0px;
+      /* Adjust the padding as needed */
+    }
 
-  .card-title {
-    font-size: 17.5px;
-    margin-bottom: 1px ;
-    color: #333;
-  }
+    .container {
+      padding: 0px 20px 20px 20px;
+      /* Add padding to the container */
+    }
 
-  .card-text {
-    font-size: 24px;
-    font-weight: bold;
-    color: #6c757d;
-  }
-  
+    .card.text-center {
+      border: 3px solid #ccc;
+      padding: 10px;
+      margin: 10px;
+      background-color: #f8f9fa;
+      border-radius: 5px;
+    }
+
+    .card-title {
+      font-size: 17.5px;
+      margin-bottom: 1px;
+      color: #333;
+    }
+
+    .card-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: #6c757d;
+    }
   </style>
 
 </head>
@@ -149,66 +155,66 @@ $total_expense_amount = '0' + mysqli_fetch_assoc($total_expense)['SUM(expense)']
           <span data-feather="menu"></span>
         </button>
         <div class="col-md-0 text-center">
-    <h3 class="try">Dashboard</h3>
-</div>
-        
+          <h3 class="try">Dashboard</h3>
+        </div>
+
       </nav>
       <div class="container-fluid">
         <h4 class="mt-4">Full-Expense Report</h4>
         <div class="row">
 
-        <div class="container mt-4">
-  <div class="row">
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Today's Expense</h5>
-          <p class="card-text">₹<?php echo $today_expense_amount; ?></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Yesterday's Expense</h5>
-          <p class="card-text">₹<?php echo $yesterday_expense_amount; ?></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Last 7Day's Expense</h5>
-          <p class="card-text">₹<?php echo $this_week_expense_amount; ?></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Last 30Day's Expense</h5>
-          <p class="card-text">₹<?php echo $this_month_expense_amount; ?></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Current Year Expense</h5>
-          <p class="card-text">₹<?php echo $this_year_expense_amount; ?></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Total Expense</h5>
-          <p class="card-text">₹<?php echo $total_expense_amount; ?></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+          <div class="container mt-4">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Today's Expense</h5>
+                    <p class="card-text">₹<?php echo $today_expense_amount; ?></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Yesterday's Expense</h5>
+                    <p class="card-text">₹<?php echo $yesterday_expense_amount; ?></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Last 7Day's Expense</h5>
+                    <p class="card-text">₹<?php echo $this_week_expense_amount; ?></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Last 30Day's Expense</h5>
+                    <p class="card-text">₹<?php echo $this_month_expense_amount; ?></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Current Year Expense</h5>
+                    <p class="card-text">₹<?php echo $this_year_expense_amount; ?></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Total Expense</h5>
+                    <p class="card-text">₹<?php echo $total_expense_amount; ?></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- Daily Expenses Chart -->
           <div class="col-md-6">
@@ -279,68 +285,68 @@ $total_expense_amount = '0' + mysqli_fetch_assoc($total_expense)['SUM(expense)']
   <script>
     var ctx = document.getElementById('expense_category_pie').getContext('2d');
 
-var categories = [<?php while ($a = mysqli_fetch_array($exp_category_dc)) {
-    echo '"' . $a['expensecategory'] . '",';
-} ?>];
-var expenses = [<?php while ($b = mysqli_fetch_array($exp_amt_dc)) {
-    echo '"' . $b['SUM(expense)'] . '",';
-} ?>];
-var colors = [
-    '#6f42c1',
-    '#dc3545',
-    '#28a745',
-    '#007bff',
-    '#ffc107',
-    '#20c997',
-    '#17a2b8',
-    '#fd7e14',
-    '#e83e8c',
-    '#6610f2'
-];
+    var categories = [<?php while ($a = mysqli_fetch_array($exp_category_dc)) {
+                        echo '"' . $a['expensecategory'] . '",';
+                      } ?>];
+    var expenses = [<?php while ($b = mysqli_fetch_array($exp_amt_dc)) {
+                      echo '"' . $b['SUM(expense)'] . '",';
+                    } ?>];
+    var colors = [
+      '#6f42c1',
+      '#dc3545',
+      '#28a745',
+      '#007bff',
+      '#ffc107',
+      '#20c997',
+      '#17a2b8',
+      '#fd7e14',
+      '#e83e8c',
+      '#6610f2'
+    ];
 
-var dataset = {
-    labels: categories,
-    datasets: [{
+    var dataset = {
+      labels: categories,
+      datasets: [{
         label: 'Expense by Category (Last Month)',
         data: expenses,
         backgroundColor: colors,
         borderWidth: 1
-    }]
-};
+      }]
+    };
 
-var options = {
-    scales: {
+    var options = {
+      scales: {
         x: {
-            beginAtZero: true,
-            ticks: {
-                autoSkip: false,
-                maxRotation: 45,
-                minRotation: 45
-            }
+          beginAtZero: true,
+          ticks: {
+            autoSkip: false,
+            maxRotation: 45,
+            minRotation: 45
+          }
         },
         y: {
-            beginAtZero: true
+          beginAtZero: true
         }
-    }
-};
+      }
+    };
 
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: dataset,
-    options: options
-});
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: dataset,
+      options: options
+    });
 
 
-var yearlyColors = [
-  '#dc3545',  // Red
-    '#28a745',  // Green
-    '#007bff',  // Blue
-    '#ffc107',  // Yellow
-    '#20c997',  // Teal
-    '#17a2b8',  // Cyan
-    '#fd7e14',  // Orange
-    '#e83e8c',  // Pink
-    '#6610f2'
+    var yearlyColors = [
+      '#dc3545', // Red
+      '#28a745', // Green
+      '#007bff', // Blue
+      '#ffc107', // Yellow
+      '#20c997', // Teal
+      '#17a2b8', // Cyan
+      '#fd7e14', // Orange
+      '#e83e8c', // Pink
+      '#6610f2'
     ];
 
     var yearlyLine = document.getElementById('expense_yearly_line').getContext('2d');
@@ -372,75 +378,71 @@ var yearlyColors = [
       }
     });
 
-  var monthlyLine = document.getElementById('monthly_expense_line').getContext('2d');
-var monthlyChartData = {
-    labels: [<?php echo '"' . implode('","', $monthly_labels) . '"'; ?>],
-    datasets: [{
+    var monthlyLine = document.getElementById('monthly_expense_line').getContext('2d');
+    var monthlyChartData = {
+      labels: [<?php echo '"' . implode('","', $monthly_labels) . '"'; ?>],
+      datasets: [{
         label: 'Monthly Expense (Last Year)',
         data: [<?php echo implode(',', $monthly_expense_data); ?>],
         borderColor: [
-            '#fd7e14'
+          '#fd7e14'
         ],
         backgroundColor: [
-            '#fd7e14'
+          '#fd7e14'
         ],
         fill: false,
         borderWidth: 2
-    }]
-};
-var monthlyExpenseChart = new Chart(monthlyLine, {
-    type: 'line',
-    data: monthlyChartData,
-    options: {
+      }]
+    };
+    var monthlyExpenseChart = new Chart(monthlyLine, {
+      type: 'line',
+      data: monthlyChartData,
+      options: {
         scales: {
-            x: {
-                ticks: {
-                    autoSkip: false,
-                    maxRotation: 45,
-                    minRotation: 45
-                }
+          x: {
+            ticks: {
+              autoSkip: false,
+              maxRotation: 45,
+              minRotation: 45
             }
+          }
         }
-    }
-});
+      }
+    });
 
 
-var line = document.getElementById('expense_line').getContext('2d');
-var myChart = new Chart(line, {
-  type: 'line',
-  data: {
-    labels: [<?php while ($c = mysqli_fetch_array($exp_date_line)) {
-                echo '"' . $c['day_month'] . '",';
-              } ?>],
-    datasets: [{
-      label: 'Expense by Day (Last Week)',
-      data: [<?php while ($d = mysqli_fetch_array($exp_amt_line)) {
-                echo '"' . $d['SUM(expense)'] . '",';
-              } ?>],
-      borderColor: [
-        '#adb5bd'
-      ],
-      backgroundColor: [
-        '#6f42c1',
-        '#dc3545',
-        '#28a745',
-        '#007bff',
-        '#ffc107',
-        '#20c997',
-        '#17a2b8',
-        '#fd7e14',
-        '#e83e8c',
-        '#6610f2'
-      ],
-      fill: false,
-      borderWidth: 2
-    }]
-  }
-});
-
-
-
-    
+    var line = document.getElementById('expense_line').getContext('2d');
+    var myChart = new Chart(line, {
+      type: 'line',
+      data: {
+        labels: [<?php while ($c = mysqli_fetch_array($exp_date_line)) {
+                    echo '"' . $c['day_month'] . '",';
+                  } ?>],
+        datasets: [{
+          label: 'Expense by Day (Last Week)',
+          data: [<?php while ($d = mysqli_fetch_array($exp_amt_line)) {
+                    echo '"' . $d['SUM(expense)'] . '",';
+                  } ?>],
+          borderColor: [
+            '#adb5bd'
+          ],
+          backgroundColor: [
+            '#6f42c1',
+            '#dc3545',
+            '#28a745',
+            '#007bff',
+            '#ffc107',
+            '#20c997',
+            '#17a2b8',
+            '#fd7e14',
+            '#e83e8c',
+            '#6610f2'
+          ],
+          fill: false,
+          borderWidth: 2
+        }]
+      }
+    });
   </script>
 </body>
 
